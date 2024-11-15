@@ -92,7 +92,7 @@ def KB_AGENT(percept):
 - **Entails**:
   - A sentence $s_1$ entails $s_2$ if all models that satisfy $s_1$ also satisfy $s_2$.
   - $M(s_1) \subseteq M(s_2)$
-  - $\textbf{s_1} \models \textbf{s_2}$
+  - $s_1 \models s_2$
 
 ## Inference
 
@@ -169,13 +169,17 @@ $$\frac{\alpha \implies \beta, \alpha}{\beta}$$
 
 $$\frac{\alpha \land \beta}{\alpha} \quad \frac{\alpha \land \beta}{\beta}$$
 
-#### Elimitation from equivalences
+#### Elimination of $\lor$
 
-- Any logical equivalence can be used to derive new sentences.
+- If $\alpha \lor \beta$ is true, then only one of $\alpha$ or $\beta$ can be false.
 
-$$(\alpha \iff \beta) \equiv ((\alpha \to \beta) \land (\beta \to \alpha))$$
+$$\frac{\alpha \lor \beta, \neg\alpha}{\beta} \quad \frac{\alpha \lor \beta, \neg\beta}{\alpha}$$
 
-$$\frac{\alpha \iff \beta}{(\alpha \implies \beta) \land (\beta \implies \alpha)} \quad \frac{\alpha \iff \beta}{(\beta \implies \alpha) \land (\alpha \implies \beta)}$$
+#### Elimitation using equivalance
+
+- Logical equivalence can be used to derive new sentences witch does not contain specific operators.
+- **Biconditional elimination**: $$\frac{\alpha \iff \beta}{(\alpha \implies \beta) \land (\beta \implies \alpha)}$$
+- **Implication elimination**: $$\frac{\alpha \implies \beta}{\neg\alpha \lor \beta}$$
 
 #### Resolution
 
@@ -191,7 +195,8 @@ $$\frac{\alpha \lor \beta, \neg\alpha \lor \gamma}{\beta \lor \gamma}$$
 
 #### CNF (Conjunctive Normal Form)
 
-- A sentence is in CNF if it is a conjunction of disjunctions of literals.
+- A sentence is in CNF if it is a conjunction of clauses.
+- Every sentence can be written in CNF.
 
 $$\alpha = (P \lor Q) \land (\neg P \lor R) \land (Q \lor \neg R)$$
 
@@ -201,6 +206,21 @@ $$\alpha = (P \lor Q) \land (\neg P \lor R) \land (Q \lor \neg R)$$
   - Move $\neg$ inwards using De Morgan's laws.
   - Distribute $\lor$ over $\land$.
 
-- **Resolution in CNF**:
+- **Resolution using CNF**:
   - Convert the knowledge base to CNF.
   - Apply resolution to derive new sentences.
+
+> Example:
+>
+> **KB**:
+> $$P \implies Q$$
+> $$P \lor R$$
+> $$\neg Q$$
+>
+> 1. Convert KB to CNF
+>    $$\neg P \lor Q$$
+>    $$P \lor R$$
+>    $$\neg Q$$
+> 2. Apply resolution
+>    $$\frac{\neg P \lor Q, P \lor R}{Q \lor R}$$
+>    $$\frac{Q \lor R, \neg Q}{R}$$
